@@ -44,7 +44,6 @@ model ProjectTechnology {
 model Technology {
   technology_id     Int                 @id @default(autoincrement())
   technology_name   String              @db.VarChar(255)
-  projectProject_id Int?
   ProjectTechnology ProjectTechnology[]
 }
 
