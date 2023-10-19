@@ -3,8 +3,8 @@ import { ProjectController } from './project.controller';
 import ProjectService from './project.service';
 
 @Module({
-  controllers: [],
-  providers: [ProjectController],
-  exports: [ProjectService],
+  imports: [],
+  controllers: [ProjectController],
+  providers: [ProjectService],
 })
 export default class ProjectModule {}
