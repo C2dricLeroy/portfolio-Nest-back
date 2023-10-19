@@ -27,7 +27,7 @@ export class ContactService {
     const date = new Date();
 
     try {
-      this.prisma.contact.create({
+      return await this.prisma.contact.create({
         data: {
           contact_name: body.contact_name,
           contact_email: body.contact_email,
@@ -36,7 +36,6 @@ export class ContactService {
           date: date,
         },
       });
-      return true;
     } catch (e) {
       throw new Error('Could not create contact');
     }
