@@ -12,11 +12,31 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const technology_module_1 = require("./resources/technology/technology.module");
 const project_module_1 = require("./resources/project/project.module");
+const contact_module_1 = require("./resources/contact/contact.module");
+const mailer_1 = require("@nestjs-modules/mailer");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [technology_module_1.TechnologyModule, project_module_1.default],
+        imports: [
+            technology_module_1.TechnologyModule,
+            project_module_1.default,
+            contact_module_1.ContactModule,
+            mailer_1.MailerModule.forRoot({
+                transport: {
+                    host: 'smtp.gmail.com',
+                    port: 587,
+                    secure: false,
+                    auth: {
+                        user: process.env.EMAIL_ID,
+                        pass: process.env.EMAIL_PASS,
+                    },
+                },
+                defaults: {
+                    from: '"Votre Nom" <pro.cedricleroy@gmail.com>',
+                },
+            }),
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
