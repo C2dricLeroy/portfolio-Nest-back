@@ -24,7 +24,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         },
       },
       defaults: {
-        from: '"Votre Nom" <pro.cedricleroy@gmail.com>',
+        from: '"Cédric Leroy Portfolio" <pro.cedricleroy@gmail.com>',
       },
     }),
   ],
