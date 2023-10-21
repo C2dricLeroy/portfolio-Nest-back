@@ -1,0 +1,77 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Clear docker context
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            docker stop postgres-prod
+            docker stop nest-prod
+            docker system prune -a -f  
+
+      - name: Send files to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          source: ./portfolio-nest-back/
+          target: api
+
+      - name: Build API Image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /${{ secrets.SERVER_USERNAME }}/api/groovz/
+            docker build -t groovz-api:1.0 .
+            docker network create api-network-prod
+
+      - name: Mount Postgres Container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            docker run -d \
+            --network=api-network-prod \
+            --name=postgres-prod \
+            -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            -p 5555:5432 \
+            -v postgres:/var/lib/postgresql/data \
+            postgres:13.5
+
+      - name: Mount Nest Container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            docker run -d \
+            --network=api-network-prod \
+            --name=nest-prod \
+            -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            -e CLIENT_ID=${{ secrets.CLIENT_ID }} \
+            -e CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} \
+            -p 3333:3333 \
+            --restart always \
+            groovz-api:1.0
