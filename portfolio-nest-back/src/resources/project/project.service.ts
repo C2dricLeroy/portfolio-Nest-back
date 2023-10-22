@@ -8,4 +8,12 @@ export default class ProjectService {
   async getProjects() {
     return await this.prisma.project.findMany();
   }
+
+  async getProjectById(id: string) {
+    return await this.prisma.project.findUnique({
+      where: {
+        project_id: +id,
+      },
+    });
+  }
 }

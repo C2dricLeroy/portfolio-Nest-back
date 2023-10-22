@@ -10,4 +10,9 @@ export class ProjectController {
   async getProjects() {
     return await this.projectService.getProjects();
   }
+
+  @Get('/:id')
+  async getProjectById(id: string) {
+    return await this.projectService.getProjectById(id);
+  }
 }
