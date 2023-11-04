@@ -44,8 +44,25 @@ export class ContactService {
   async formatMail(body: Email) {
     const { message, contact_name, contact_email, contact_phone } = body;
 
-    return `From ${contact_name} <${contact_email}>,
-        Phone: ${contact_phone},
-        Message: ${message}`;
+    const htmlEmail = `
+      <html lang="fr">
+        <head>
+          <style>
+            /* Ajoutez ici votre CSS pour la mise en page du courriel */
+          </style>
+          <title>Mail</title>
+        </head>
+        <body>
+          <h1>Formulaire de contact</h1>
+          <p>De : ${contact_name} &lt;${contact_email}&gt;</p>
+          <p>Téléphone : ${contact_phone}</p>
+          <p>Message : ${message}</p>
+        </body>
+      </html>
+    `;
+
+    return {
+      htmlEmail,
+    };
   }
 }
