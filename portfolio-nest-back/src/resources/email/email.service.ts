@@ -5,7 +5,7 @@ import { Inject, Injectable } from '@nestjs/common';
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendEmail(email_message: string) {
+  async sendEmail(email_message: { htmlEmail: string }) {
     const mailOptions = {
       to: 'pro.cedricleroy@gmail.com',
       subject: 'Message from portfolio-nest-back',
