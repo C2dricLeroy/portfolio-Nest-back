@@ -2,11 +2,11 @@ import { Controller, Get } from '@nestjs/common';
 import { ContactService } from '../contact/contact.service';
 import ProjectService from './project.service';
 
-@Controller()
+@Controller('/api/project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Get('/')
+  @Get('/getAll')
   async getProjects() {
     return await this.projectService.getProjects();
   }

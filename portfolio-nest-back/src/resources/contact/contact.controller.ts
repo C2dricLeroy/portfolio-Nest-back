@@ -6,7 +6,7 @@ import { EmailDto } from './dto/contact.dto';
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
-  @Post('new')
+  @Post('/new')
   async newContact(@Body() body: EmailDto) {
     return await this.contactService.newContact(body);
   }

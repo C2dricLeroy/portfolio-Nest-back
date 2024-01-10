@@ -12,6 +12,7 @@ export class EmailService {
       text: email_message,
     };
 
+    // @ts-ignore
     await this.mailerService.sendMail(mailOptions);
   }
 }

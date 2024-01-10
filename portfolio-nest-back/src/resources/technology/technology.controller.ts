@@ -5,7 +5,7 @@ import { TechnologyService } from './technology.service';
 export class TechnologyController {
   technologyService = new TechnologyService();
 
-  @Get('/')
+  @Get('/getAll')
   async findAll() {
     return this.technologyService.findAll();
   }
