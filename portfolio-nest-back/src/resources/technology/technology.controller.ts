@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { TechnologyService } from './technology.service';
 
-@Controller('api/technology')
+@Controller('/technology')
 export class TechnologyController {
   technologyService = new TechnologyService();
 
