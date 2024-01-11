@@ -6,7 +6,9 @@ export default class ProjectService {
   prisma = new PrismaClient();
 
   async getProjects() {
-    return await this.prisma.project.findMany();
+    return await this.prisma.project.findMany({
+      include: { project_status: true },
+    });
   }
 
   async getProjectById(id: string) {
