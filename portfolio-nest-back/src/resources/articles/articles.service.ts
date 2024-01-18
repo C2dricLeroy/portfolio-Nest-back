@@ -13,7 +13,11 @@ export class ArticlesService {
   findAll() {
     return this.prisma.articles.findMany({
       include: {
-        article_categories: true,
+        article_categories: {
+          include: {
+            category: true,
+          },
+        },
         article_status: true,
       },
     });
