@@ -21,10 +21,11 @@ model Project {
   project_date_begin  DateTime
   project_date_end    DateTime?
   project_name        String              @db.VarChar(255)
-  project_description String?             @db.VarChar(1000)
+  project_description String?             @db.VarChar(2000)
   project_url         String?             @db.VarChar(255)
   project_github      String?             @db.VarChar(255)
   project_image_path  String?             @db.VarChar(100)
+  project_summary     String?             @db.VarChar(500)
   status_id           Int
   project_status      ProjectStatus       @relation(fields: [status_id], references: [id])
   ProjectTechnology   ProjectTechnology[]

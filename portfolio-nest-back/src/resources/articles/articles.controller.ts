@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -12,7 +21,7 @@ export class ArticlesController {
     return this.articlesService.create(createArticleDto);
   }
 
-  @Get()
+  @Get('/getAll')
   findAll() {
     return this.articlesService.findAll();
   }

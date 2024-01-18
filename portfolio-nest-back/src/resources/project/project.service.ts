@@ -7,7 +7,14 @@ export default class ProjectService {
 
   async getProjects() {
     return await this.prisma.project.findMany({
-      include: { project_status: true },
+      include: {
+        project_status: true,
+        ProjectTechnology: {
+          include: {
+            technology: true,
+          },
+        },
+      },
     });
   }
 
