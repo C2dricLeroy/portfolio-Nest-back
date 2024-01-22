@@ -38,6 +38,8 @@ lerna-debug.log*
 
 *./node_modules
 
+./docker-compose.yml
+
 ../.idea/
 /.env
 ./.env

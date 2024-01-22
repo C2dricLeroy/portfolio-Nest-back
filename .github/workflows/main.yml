@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             docker stop postgres-prod
-            docker stop nest-prod
+            docker stop portfolio-back
             docker system prune -a -f  
 
       - name: Send files to server
@@ -39,8 +39,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /${{ secrets.SERVER_USERNAME }}/api/groovz/
-            docker build -t groovz-api:1.0 .
+            cd /${{ secrets.SERVER_USERNAME }}/api/portfolio-nest-back/
+            docker build -t portfolio-back .
             docker network create api-network-prod
 
       - name: Mount Postgres Container
@@ -55,7 +55,7 @@ jobs:
             --name=postgres-prod \
             -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
             -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
-            -p 5555:5432 \
+            -p 5432:5432 \
             -v postgres:/var/lib/postgresql/data \
             postgres:13.5
 
@@ -67,11 +67,8 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             docker run -d \
-            --network=api-network-prod \
-            --name=nest-prod \
+            --name=portfolio-back \
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
-            -e CLIENT_ID=${{ secrets.CLIENT_ID }} \
-            -e CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} \
-            -p 3333:3333 \
+            -p 3500:3500 \
             --restart always \
-            groovz-api:1.0
+            portfolio-back
