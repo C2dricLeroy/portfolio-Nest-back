@@ -43,6 +43,22 @@ jobs:
             docker build -t portfolio-back .
             docker network create api-network-prod
 
+      - name: Mount Postgres Container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            docker run -d \
+            --network=api-network-prod \
+            --name=postgres-prod \
+            -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            -p 5432:5432 \
+            -v postgres:/var/lib/postgresql/data \
+            postgres:13.5
+
       - name: Mount Nest Container
         uses: appleboy/ssh-action@master
         with:
